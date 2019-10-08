@@ -1,0 +1,218 @@
+\documentclass{skript}
+
+\title{Global Analysis I}
+\lecturer{Dr.\ Koen van den Dungen}
+\author{Nicholas Schwab}
+\date{Winter Term 2019/20}
+
+
+\bibliography{literature}
+
+\begin{document}
+\thispagestyle{plain}
+These notes are on the lecture Global Analysis I (V3B3/F4B1) in the winter term 2019/20 at the University Bonn.
+
+\tableofcontents
+
+\chapter{Introduction}
+The main topics of this lecture include differential forms, Riemann geometry and curvature as well as de Rham cohomology. 
+We strife toe proof the theorems of Stokes, Hopf-Rinow, Gauss-Bonnet and de Rham.
+If we have time, we will furthermore proof the Hodge decomposition. 
+The lecture will be based on two books (\cite{lee_smooth}~and~\cite{lee_riemannian}) by Lee.
+
+Exercise classes are scheduled for Tuesdays 8:30--10:00 and 16:15--17:45 starting on the 15th of October. 
+The exercise sheets are due every Monday at 10 o'clock during the lecture or in room 1.032.
+Exercise groups up to four students are allowed.
+The course homepage can be found on~\cite{prof_webpage}
+Exercise sheets will be put on~\cite{lecture_webpage}
+
+\chapter{Fundamentals on manifolds}
+\section{Topological manifolds}
+
+\begin{definition}[Topological manifolds]\label{def:topmanf}
+    A topological space $M$ is called a \emph{topological manifold} of dimension $n$ if $M$ is
+    \begin{itemize}
+        \item
+            Hausdorff: For all $p\neq q\in M$ there are disjoint open subsets  $U,V\subset M$ such that $p\in U$, $q\in V$.
+        \item 
+            second-countable, i.e.\ there exists a countable basis for the topology of $M$.
+        \item
+            locally Euclidean of dimension $n$: For all $p\in M$ there are open subsets $U\subset M$, $\hat U\subset \IR^n$ such that $p\in U$ and $U\simeq \hat U$.
+    \end{itemize}
+\end{definition}
+
+\begin{fact}
+    The dimension is a topological invariant.
+\end{fact}
+
+\begin{note}
+    The empty set is a topological manifold of arbitrary dimension.
+\end{note}
+
+\begin{bsp}
+    The space $\IR^n$ is a topological manifold of dimension $n$. It is Hausdorff as a metric space. The open balls with rational centers and rational radii form a countable base and we can take $U=\hat U = \IR^n$.
+\end{bsp}
+
+\begin{definition}[Coordinate chart]\label{def:coordchar}
+    A \emph{coordinate chart} on $M$ is a pair $(U, \phi)$, where $U\subset M$ is open and non-empty and $\phi\colon U\to \hat U$ is a homeomorphism to an open subset $\hat U \subset \IR^n$. 
+    If $\phi(U)$ is an open ball, $U$ is called a coordinate ball.
+    We obtain coordinate functions $x^j$ for $j=1,\dots, n$ defined by $\phi(p) = (x^1(p), \dots, x^n(p))$.
+\end{definition}
+
+\begin{bsp}[Spheres]
+    $S^n\subset \IR^{n+1}$ is Hausdorff and second-countable.
+    For $j=1, \dots, n+1$, define the open subsets 
+    \begin{align*}
+        U^\pm_j = \left\{(x^1, \dots, x^{n+1})\in \IR^{n+1}\such \pm x^j > 0\right\}
+    \end{align*}
+Define $\phi^\pm_j\colon U^\pm_j \cap S^n \to B^n$ by $\phi^\pm \coloneqq (x^1, \dots, \hat{x}^j, \dots, x^{n+1})$ where $\hat{x}^j$ denotes omission of $x^j$.
+    Each $\phi^\pm_j$ is a homeomorphism with inverse 
+    \begin{align*}
+        (u^1, \dots, u^n) \mapsto \left(u^1,\dots, \pm\sqrt{1-|U|^2}, \dots, u^n\right)
+    \end{align*}
+    Then we have coordinate charts $(U^\pm_j\cap S^n, \phi^\pm_j)$ which cover $S^n$.
+    So $S^n$ is a topological manifold.
+\end{bsp}
+
+\begin{bsp}
+    Let $M$ and $N$ be topological manifolds of dimension $m$ and $n$ respectively. 
+    Then $M\times N$ is a topological manifold of dimension $m+n$. 
+    Given $(p,q)\in M\times N$ pick coordinate charts $(U,\phi)$ around $p$ and $(V, \psi)$ around $q$. 
+    Then $(U\times V, \phi\times\psi)$ is a coordinate chart around $(p,q)$.
+\end{bsp}
+
+\begin{corr}
+    The $n$-dimensional torus $\IT^n = \prod_{i=1}^n S^1$ is a topological manifold.
+\end{corr}
+
+\section{Smooth manifolds}
+\begin{note}
+    Smooth means of class $C^\infty$ which means infinitely continuously differentiable.
+\end{note}
+
+\begin{definition}[Fundamental terms related to smooth manifolds]\label{def:transmap}
+    Given a topological manifold and coordinate charts $(U,\phi)$ and $(V,\psi)$ such that $U$ and $V$ intersect, we have a \emph{transition map} $\psi\circ \phi^{-1}\colon \phi(U\cap V) \to \psi(U\cap V)$.
+Two coordinate charts are smoothly compatible if $U\cap V = \emptyset$ or their transition map is a diffeomorphism (i.e.\ a smooth and bijective map with a smooth inverse). 
+
+    An atlas for $M$ is a collection of coordinate charts covering $M$.
+    An atlas is smooth if any two charts are smoothly compatible.
+    A smooth atlas is maximal if it is not properly contained in any larger smooth atlas.
+\end{definition}
+
+\begin{definition}[Smooth manifold]\label{def:smoothmanf}
+    A \emph{smooth structure} on a topological manifold $M$ is a maximal smooth atlas.
+    A smooth manifold is a topological manifold with a given smooth structure.
+\end{definition}
+
+\begin{lemma}\label{lem:opensmoothmaps}
+    Let $U\subseteq \IR^n$ be open and let $F\colon U\to\IR^n$ be a smooth  map whose Jacobian is non-singular at each point. 
+    Then $F$ is open.
+    Moreover if $F$ is injective, it is a diffeomorphism.
+\end{lemma}
+
+\begin{prop}
+    \begin{alphanumerate}
+        \item
+            Every smooth atlas is contained in a unique maximal smooth atlas and hence determines a smooth structure.
+        \item 
+            Two smooth atlases determine the same smooth structure if and only if their union is again a smooth atlas.
+    \end{alphanumerate}
+\end{prop}
+\begin{proof}
+    \begin{alphanumerate}
+        \item
+            Given a smooth atlas $\Aa$, let $\overline \Aa$ be the set of all charts which are smoothly compatible with every chart in $\Aa$.
+            Given $(U,\phi), (V,\psi)\in \overline \Aa$ with $U\cap V\neq \emptyset$, pick $x=\phi(p) \in \phi(U\cap V)$.
+            Then, there exists a chart $(W,\theta)\in \Aa$ with $p\in W$.
+            Therefore $\psi \circ\phi^{-1} = (\psi\circ \theta^{-1}) \circ (\theta\circ \phi^{-1})$ is smooth on a neighborhood of $x$.
+            Thus $\overline \Aa$ is a smooth atlas which is clearly maximal.
+            If $\Bb$ is another smooth atlas containing $\Aa$, we have $\Bb \subset\overline \Aa$, so if $\Bb$ is maximal we must have $\Bb = \overline \Aa$.
+        \item 
+            Is left as an exercise.
+    \end{alphanumerate}
+\end{proof}
+
+\begin{bsp}
+    The standard smooth structure on $\IR^n$ is the one obtained by the single chart $(\IR^n, \id)$.
+    Another smooth structure on $\IR$ is determined by $\psi\colon \IR\to \IR$, $\psi(x) = x^3$.
+    Here, $\psi = \psi\circ \id^{-1}$ is smooth and bijective but its inverse $\psi^{-1}(y) = y^{1/3}$ is not smooth at $y=0$.
+    Hence this smooth structure is different from the standard one.
+\end{bsp}
+
+\begin{bsp}[Spheres]
+    The standard smooth structure on the sphere $S^n\subset\IR^{n+1}$ is the one obtained from the atlas $\{(U^\pm_j\cap S^n, \phi^\pm_j)\}_j$.
+    This atlas is indeed smooth, e.g. for $j<k$ we have 
+    \begin{align*}
+        \phi^\pm_j\circ (\phi_k^\pm)^{-1}(x_1,\dots, x_{n+1}) = \left(x_1,\dots, \hat x^j, \dots, \sqrt{1-|x|^2}, \dots, x^{n+1}\right)
+    \end{align*}
+    which is smooth  on $B^n$.
+\end{bsp}
+
+\begin{lemma}
+    Let $M$ be a set with a collection of subsets $\{U_\alpha\}$ of $M$ and maps $\phi_\alpha\colon U_\alpha \to \IR^n$ such that
+    \begin{enumerate}
+        \item 
+            each $\phi_\alpha\colon U_\alpha\to \phi(U_\alpha)$ is bijective, and $\phi_\alpha(U_\alpha)\subset \IR^n$ is open.
+        \item
+            for all $\alpha, \beta$ the sets $\phi_\alpha(U_\alpha\cap U_\beta)$ and $\phi_\beta(U_\alpha\cap U_\beta)$ are open.
+        \item
+            If $U_\alpha\cap U_\beta \neq \emptyset$, the map $\phi_\beta\circ\phi_\alpha^{-1}\colon \phi_\alpha(U\alpha\cap U_\beta) \to \phi(U_\alpha\cap U_\beta)$ is smooth.
+        \item
+            $M$ can be covered by countably many $U_\alpha$
+        \item
+            for $p\neq q\in M$, either $p,q\in U_\alpha$ for some $\alpha$ or there exist disjoint $U_\alpha$ and $U_\beta$ with $p\in U_\alpha$ and $q\in U_\beta$.
+    \end{enumerate}
+    Then $M$ has a unique smooth manifold structure such that each $(U_\alpha, \phi_\alpha)$ is a smooth chart.
+\end{lemma}
+\begin{proof}
+    Idea: Define the topology by the basis $\left\{\phi_\alpha^{-1}(V)\right\}$ for $V\subset\IR^n$ open.
+\end{proof}
+
+\section{Manifolds with boundary}
+There look locally like either $\IR^n$ or the closed upper half-space 
+\begin{align*}
+    \IH^n\coloneqq \left\{(x^1,\dots, x^n)\in \IR^n: x^n\geq 0\right\}\;.
+\end{align*}
+The interior and boundary are denoted by
+\begin{align*}
+    \Int \IH^n   &= \left\{(x^1,\dots, x^n) \in \IR^n \such x^n > 0\right\}\\
+    \delta \IH^n &= \left\{(x^1,\dots, x^n) \in \IR^n \such x^n = 0\right\}\;.
+\end{align*}
+
+\begin{definition}[Topological manifold with boundary]\label{def:topmanfbound}
+    A topological manifold with boundary is a second-countable Hausdorff space $M$ in which every point has a neighborhood homeomorphic to an open subset in $\IR^n$ or to a open subset in $\IH^n$.
+
+A chart $(U,\phi)$ is called 
+\begin{itemize}
+    \item 
+        an interior chart if $\phi(U) \subset \IR^n$ is open.
+    \item
+        a boundary chart if $\phi(U)\subset \IH^n$ is open and $\phi(U) \cap \delta\IH^n \neq \emptyset$.
+\end{itemize}
+A point is called
+\begin{itemize}
+\item
+    an interior point if it is in the domain of an interior map.
+\item 
+    a boundary point if it is in the domain of a boundary point that sends $p$ to $\delta \IH^n$.
+\end{itemize}
+If $U\subset \IH^n$ is open, $F:U\to \IR^k$ is smooth if for all $x\in U$ such that there is an open subset $\hat U\subset \IR^n$ with $x\in \hat U$ and a smooth map $\hat F\colon \hat U \to \IR^k$ such that $F\equiv \hat F$ on $U\cap \hat U$.
+We then define a smooth structure on manifolds with boundary in the same manner as for topological manifolds.
+
+\end{definition}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\printbibliography
+\end{document}
