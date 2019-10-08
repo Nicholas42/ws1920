@@ -2,4 +2,6 @@ These are my notes on some lectures in the winter term 2019/20 at the University
 
 The built pdfs can be found on https://nicholas-schwab.de/ws1920/
 
+The styles and classes also lie in my texmf folder, so I dont think this repo will build as is. You should either copy them into your texmf folder or into the folder of the lecture you want to build.
+
 For Global Analysis I please also look at the (probably much better) notes by Jendrik: https://gitlab.com/lecture-notes-bonn/global-analysis-1-notes-ws-19-20 
