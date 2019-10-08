@@ -1,0 +1,28 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{linprog}[2019/04/06 Package to facilitate writing of linear programs]
+
+\RequirePackage{amsmath}
+\RequirePackage{xparse}
+\RequirePackage{environ}
+
+\newcommand{\lpmax}[1]{&&\max{}~#1&&}
+\newcommand{\lpmin}[1]{&&\min{}~#1&&}
+
+\newcommand{\lpmaximize}[1]{&&\operatorname{maximize}~#1&&}
+\newcommand{\lpminimize}[1]{&&\operatorname{minimize}~#1&&}
+
+\newcommand{\lpst}{\operatorname{s.t.}}
+\newcommand{\lpsubto}{\operatorname{subject to}}
+
+\newcounter{linprog}
+\newcounter{constraint}
+\counterwithin*{constraint}{linprog}
+
+\NewEnviron{linprog}{\begin{align*}\stepcounter{linprog}
+		\BODY
+\end{align*}}
+
+
+\NewDocumentCommand{\AddConstraint}{ O{\leq} O{} O{\thelinprog} m m m}{&&#4 &#1 #5&#6\stepcounter{constraint}\ifx\relax#2\relax \else \tag{#3:\theconstraint}\label{#2}\fi}
+
+\endinput

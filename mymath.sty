@@ -1,0 +1,115 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{mymath}[2019/04/11 Package with helpful math stuff]
+
+%The language to pass to babel
+\newif\ifenglish\englishtrue
+\DeclareOption{german}{\englishfalse}
+\DeclareOption{english}{\englishtrue}
+\DeclareOption*{\PackageWarning{mymath}{Unknown '\CurrentOption'}}
+\ProcessOptions\relax
+
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{lmodern}
+\RequirePackage[\ifenglish english\else ngerman\fi]{babel}
+\RequirePackage{amsmath}
+\RequirePackage{mathtools}
+\RequirePackage{amsthm,amssymb}
+\RequirePackage{comment}
+\RequirePackage{soul}
+\RequirePackage{subfig}
+\RequirePackage[shortlabels]{enumitem}
+\RequirePackage{hyperref}
+\RequirePackage{etoolbox}
+\RequirePackage{graphicx}
+\RequirePackage{tabularx}
+\RequirePackage{csquotes}
+\RequirePackage{dsfont}
+\RequirePackage[backend=biber,style=alphabetic]{biblatex}
+
+%%% OWN PACKAGES
+\RequirePackage{linprog}
+
+%%% TIKZ
+\RequirePackage{tikz}
+\usetikzlibrary{positioning}
+\usetikzlibrary{calc}
+
+%%% AMSTHM
+\theoremstyle{plain}
+\newtheorem{claim}{\ifenglish Claim\else Behauptung\fi}
+\newtheorem{thm}{\ifenglish Theorem\else Satz\fi}
+\newtheorem{cor}{\ifenglish Corollary\else Korollar\fi}
+\newtheorem{prop}{Proposition}
+
+\newtheorem{lemma}{Lemma}
+
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem*{fact}{\ifenglish Fact\else Fakt\fi}
+\newtheorem*{note}{\ifenglish Note\else Anmerkung\fi}
+\newtheorem{bsp}{\ifenglish Example\else Beispiel\fi}
+\newtheorem{algo}{\ifenglish Algorithm\else Algorithmus\fi}
+
+\newcommand*{\itememph}[1]{$(#1)$}
+\newenvironment{alphanumerate}{\begin{enumerate}[label={\itememph{\alph*}}]}{\end{enumerate}}
+\renewcommand*{\theenumi}{\roman{enumi}}
+\renewcommand*{\labelenumi}{(\theenumi)}
+
+\allowdisplaybreaks[1]
+
+\newcommand*{\Aa}{\mathcal{A}}
+\newcommand*{\Bb}{\mathcal{B}}
+\newcommand*{\Cc}{\mathcal{C}}
+\newcommand*{\Dd}{\mathcal{D}}
+\newcommand*{\Ee}{\mathcal{E}}
+\newcommand*{\Ff}{\mathcal{F}}
+\newcommand*{\Gg}{\mathcal{G}}
+\newcommand*{\Hh}{\mathcal{H}}
+\newcommand*{\Ii}{\mathcal{I}}
+\newcommand*{\Jj}{\mathcal{J}}
+\newcommand*{\Kk}{\mathcal{K}}
+\newcommand*{\Ll}{\mathcal{L}}
+\newcommand*{\Mm}{\mathcal{M}}
+\newcommand*{\Nn}{\mathcal{N}}
+\newcommand*{\Oo}{\mathcal{O}}
+\newcommand*{\Pp}{\mathcal{P}}
+\newcommand*{\Qq}{\mathcal{Q}}
+\newcommand*{\Rr}{\mathcal{R}}
+\newcommand*{\Ss}{\mathcal{S}}
+\newcommand*{\Tt}{\mathcal{T}}
+\newcommand*{\Uu}{\mathcal{U}}
+\newcommand*{\Vv}{\mathcal{V}}
+\newcommand*{\Ww}{\mathcal{W}}
+\newcommand*{\Xx}{\mathcal{X}}
+\newcommand*{\Yy}{\mathcal{Y}}
+\newcommand*{\Zz}{\mathcal{Z}}
+
+\newcommand*{\id}{\ensuremath{\mathrm{id}}}
+\DeclareMathOperator{\Int}{Int}
+\DeclareMathOperator{\odd}{odd}
+\DeclareMathOperator{\OPT}{OPT}
+\DeclareMathOperator{\LP}{LP}
+
+\newcommand*{\IC}{\ensuremath{\mathbb{C}}}
+\newcommand*{\IH}{\ensuremath{\mathbb{H}}}
+\newcommand*{\IT}{\ensuremath{\mathbb{T}}}
+\newcommand*{\II}{\ensuremath{\mathbb{I}}}
+\newcommand*{\IN}{\ensuremath{\mathbb{N}}}
+\newcommand*{\IQ}{\ensuremath{\mathbb{Q}}}
+\newcommand*{\IR}{\ensuremath{\mathbb{R}}}
+\newcommand*{\IZ}{\ensuremath{\mathbb{Z}}}
+\newcommand*{\IONE}{\ensuremath{\mathds{1}}}
+
+\newcommand*{\IRg}{\ensuremath{\IR_{\geq0}}}
+
+\DeclareMathOperator{\conv}{conv}
+\DeclareMathOperator{\dist}{dist}
+
+\newcommand*{\transpose}{\ensuremath{^\intercal}}
+\let\eps\epsilon
+\let\epsilon\varepsilon
+\newcommand*{\such}{\ \middle|\ }
+
+\newcommand*{\horvec}[1]{(\begin{matrix}#1\end{matrix})}
