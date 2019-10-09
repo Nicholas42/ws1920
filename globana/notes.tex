@@ -176,7 +176,7 @@ There look locally like either $\IR^n$ or the closed upper half-space
 The interior and boundary are denoted by
 \begin{align*}
     \Int \IH^n   &= \left\{(x^1,\dots, x^n) \in \IR^n \such x^n > 0\right\}\\
-    \delta \IH^n &= \left\{(x^1,\dots, x^n) \in \IR^n \such x^n = 0\right\}\;.
+    \partial \IH^n &= \left\{(x^1,\dots, x^n) \in \IR^n \such x^n = 0\right\}\;.
 \end{align*}
 
 \begin{definition}[Topological manifold with boundary]\label{def:topmanfbound}
@@ -187,30 +187,270 @@ A chart $(U,\phi)$ is called
     \item 
         an interior chart if $\phi(U) \subset \IR^n$ is open.
     \item
-        a boundary chart if $\phi(U)\subset \IH^n$ is open and $\phi(U) \cap \delta\IH^n \neq \emptyset$.
+        a boundary chart if $\phi(U)\subset \IH^n$ is open and $\phi(U) \cap \partial\IH^n \neq \emptyset$.
 \end{itemize}
 A point is called
 \begin{itemize}
 \item
-    an interior point if it is in the domain of an interior map.
+    an interior point if it is in the domain of an interior chart. 
+    The interior points form the set $\Int M$.
 \item 
-    a boundary point if it is in the domain of a boundary point that sends $p$ to $\delta \IH^n$.
+    a boundary point if it is in the domain of a boundary chart that sends $p$ to $\partial \IH^n$. 
+    The boundary points form the set $\partial M$.
 \end{itemize}
 If $U\subset \IH^n$ is open, $F:U\to \IR^k$ is smooth if for all $x\in U$ such that there is an open subset $\hat U\subset \IR^n$ with $x\in \hat U$ and a smooth map $\hat F\colon \hat U \to \IR^k$ such that $F\equiv \hat F$ on $U\cap \hat U$.
 We then define a smooth structure on manifolds with boundary in the same manner as for topological manifolds.
 
+\begin{thm}
+    Let $M$ be a smooth manifold with a boundary and let $p\in M$. 
+    If there is a smooth chart $(U, \phi)$ around $p$ such that $\phi(U) \subseteq \IH^n$ and $\phi(p) \in \partial\IH^n$, then the same is true for every smooth chart.
+    Thus $M= \Int M \sqcup \partial M$.
+\end{thm}
+\begin{proof}
+    Suppose the contrary that there is also smooth chart interior chart $(V,\psi)$ around $p$.
+    Then we have a diffeomorphism 
+    \begin{align*}
+        \tau \coloneqq \phi\circ \psi^{-1} \colon \psi(U\cap V) \longrightarrow \phi(U\cap V)
+    \end{align*}
+    Write $x_0 = \psi(p)$ and $y_0 = \phi(p) = \tau(x_0)$. 
+    There is a neighborhood $W$ of $y_0$ in $\IR^n$ and a smooth $\eta\colon W\to \IR^n$ such that $\eta \equiv \tau^{-1}$ on $W\cap \phi(U\cap V)$. 
+    Since $(V,\psi)$ is interior $\tau$ is smooth on an open ball $B\subset \psi(U\cap V)$ around $x_0$.
+    Without loss of generality, we may assume $B\subset \tau^{-1} (W)$. 
+    Then $\eta\circ \tau|_B = \id_B$ and by chain rule $D\eta(\tau(x)) \cdot D\tau(x)$ is the identity matrix for each $x\in B$.
+    In particular $D\tau$ must be non-singular.
+    Hence, $\tau \colon B\to \IR^n$ is open.
+    Thus $\tau(B)\subset \IR^n$ is open and $y_0\in \tau(B)\subset \phi(U)$ which implies $y_0\not\in \partial \IH^n$. 
+\end{proof}
+
+\end{definition}
+
+\section{Smooth maps}
+\begin{definition}[Smooth map]\label{def:smoothmap}
+Let $M,N$ be smooth manifolds, with or without boundary.
+A map $F\colon M\to N$ is \emph{smooth} if for every $p\in M$ there exist smooth charts $(U,\phi)$ around $p$ and $(V,\psi)$ around $F(p)$ such that $F(U)\subset V$ and $\psi\circ F\circ \phi^{-1}\colon \phi(U) \to \psi(V)$ is smooth. 
+\end{definition}
+
+\begin{prop}\label{prop:smoothmapcont}
+    Every smooth map is continuous.
+\end{prop}
+\begin{proof}
+    Write $F|_U = \psi^{-1}\circ (\psi\circ F\circ \phi^{-1})\circ \phi$, 
+    where $\psi^{-1},\phi$ are homeomorphisms, and $\psi\circ F\circ\phi^{-1}$ is smooth on $\IR^n$ (hence continuous).
+\end{proof}
+
+\begin{prop}
+    For a map $F\colon M\to N$, the following are equivalent:
+    \begin{alphanumerate}
+    \item
+        $F$ is smooth.
+    \item
+        $\forall p\in M$ there are smooth charts $(U,\phi)$ around $p$ and $(V,\psi)$ around $F(p)$ such that $U\cap F^{-1}(V)$ is open in $M$ and $\psi\circ F\circ \phi^{-1} (U\cap F^{-1}(V)\to \psi(V)$ is smooth.
+    \item
+        $F$ is continuous and there exist smooth atlases $\{(U_\alpha, \phi_\alpha)\}$ for $M$ and $\{(V_\beta, \psi_\beta)\}$ for $N$ such that $\forall \alpha,\beta$ the map
+        \begin{align*}
+            \psi_\beta \circ F \circ \phi^{-1}_\alpha (U_\alpha\cap F^{-1}(V_\beta)) \to \psi_\beta (V_\beta)
+        \end{align*}
+        is smooth.
+    \end{alphanumerate}
+    
+\end{prop}
+
+\begin{prop}
+    Consider a map $F\colon M\to N$.
+    \begin{alphanumerate}
+    \item 
+        If every $p\in M$ has a neighborhood $U$ such that $F|_U$ is smooth, then $F$ is smooth.
+    \item
+        If $F$ is smooth, then $F|_U$ is smooth for every $U\subset M$.
+    \end{alphanumerate}
+    
+\end{prop}
+
+\begin{cor}
+    Let $\{U_\alpha\}$ be an open cover of $M$.
+    Suppose we have smooth maps $F_\alpha\colon U_\alpha \to N$ such that $F_\alpha \equiv F_\beta$ on $U_\alpha\cap U_\beta$.
+    Then there exists a unique smooth map $F\colon M\to N$ such that $F\equiv F_\alpha$ on $U_\alpha$ for each $\alpha$.
+\end{cor}
+
+\begin{prop}
+    \begin{alphanumerate}
+    \item 
+        Every constant map is smooth.
+    \item
+        The identity map is smooth.
+    \item
+        For any open submanifold $U\subset M$, the inclusion map $U\hookrightarrow M$ is smooth.
+    \item
+        The composition of two smooth maps is again smooth.
+    \end{alphanumerate}
+\end{prop}
+
+\begin{definition}[Diffeomorphism]\label{def:diffeo}
+    A \emph{diffeomorphism} from $M$ to $N$ is a smooth bijective map that has a smooth inverse.
+    If there exists a diffeomorphism, we say $M$ and $N$ are diffeomorphic denoted by $M \approx N$.
+\end{definition}
+
+\begin{bsp}
+    Any smooth chart $(U,\phi)$ gives a diffeomorphism $\phi\colon U \to \phi(U)$.
+\end{bsp}
+
+\begin{prop}
+    \begin{alphanumerate}
+    \item
+        The composition of two diffeomorphisms is again a diffeomorphism.
+    \item
+        A finite product of diffeomorphism is a diffeomorphism.
+    \item
+        Every diffeomorphism is also a homeomorphism and an open map.
+    \item
+        The restriction of a diffeomorphism to an open subset is a diffeomorphism from this open subset to its image.
+    \item
+        Diffeomorphic is an equivalence relation.
+    \end{alphanumerate}
+\end{prop}
+
+\begin{thm}
+    If $M$ and $N$ are non-empty smooth manifolds and $M\approx N$, then $\dim M = \dim N$.
+\end{thm}
+\begin{proof}
+    Pick $p\in M$ and charts $(U,\phi)$ around $p$ and $(V,\psi)$ around $F(p)$, where $F\colon M\to N$ is a diffeomorphism. 
+    Then (the restriction of) $\hat F = \psi\circ F\circ \phi^{-1}$ is a diffeomorphism between open subsets of $\IR^{\dim M}$  and $\IR^{\dim N}$.
+    Since $\hat F^{-1} \circ \hat F$ and $\hat F\circ\hat F^{-1}$ are the identity map, it follows from the chain rule that $D\hat F(\phi(p))$ is invertible.
+    Hence it is square, so $\dim M = \dim N$.
+\end{proof}
+
+\begin{thm}
+    If $F\colon M\to N$ is a diffeomorphism between manifolds with boundary, then $F(\partial M) = \partial N$ and $F|_{\Int M}$ is a diffeomorphism.
+\end{thm}
+
+\begin{bsp}
+    Let $\IR$ be the real line with the standard smooth structure and $\tilde \IR$ be the real line with the smooth structure given by the single global chart $(\IR, \phi\colon x\to x^3)$. 
+    These are different smooth structures. 
+    Nevertheless $\IR \approx \tilde\IR$.
+
+    Consider $F\colon \IR\to\tilde\IR$ given by $F(x) = x^{1/3}$. 
+    Its coordinate representation is $\hat F(t) = \phi\circ F\circ \id^{-1}(t) = t$. 
+    Similarly $\hat F^{-1}$ is also smooth. 
+    Thus $F$ is a diffeomorphism.
+\end{bsp}
+
+\begin{fact}
+    There is only one smooth structure on the real line up to diffeomorphism.
+    The same is true for any topological manifold of dimension at most $3$.
+\end{fact}
+
+\section{Topological properties of manifolds}
+\begin{lemma}
+    Every topological manifold has a countable basis of precompact (i.e.\ whose closure is compact) coordinate balls.
+\end{lemma}
+
+\begin{cor}
+    Every topological manifold is locally compact.
+\end{cor}
+
+\begin{prop}
+    Let $M$ be a topological manifold.
+    \begin{alphanumerate}
+    \item 
+        $M$ is locally path-connected (i.e.\ it has a basis of path-connected open subsets).
+    \item
+        $M$ is connected iff $M$ is path-connected, and components are path-components.
+    \item
+        $M$ has at most countably many components, and each component is an open subset of $M$ and a connected topological manifold.
+    \end{alphanumerate}
+\end{prop}
+
+\begin{definition}[Paracompactness]
+    \begin{alphanumerate}
+    \item
+        A collection $\Cc$ of subsets of $M$ is called \emph{locally finite} if each point has a neighborhood which intersects with at most finitely many of these subsets.
+    \item
+        Given a cover $\Uu$ of $M$, a cover $\Vv$ of $M$ is called a \emph{refinement} of $\Uu$ if for each open subset $V\in \Vv$ there is a $U\in \Uu$ such that $V\subset U$.
+    \item
+        $M$ is \emph{paracompact} if every open cover of $M$ has a locally finite open refinement.
+    \end{alphanumerate}
+    
+\end{definition}
+    
+\begin{lemma}
+    Let $\Cc$ be a locally finite collection of subsets of $M$. 
+    \begin{alphanumerate}
+    \item
+        The collection $\left\{\overline C\such C\in\Cc\right\}$ is also locally finite.
+    \item
+        $\overline{\bigcup_{C\in \Cc} C} = \bigcup_{C\in \Cc}\overline C$.
+    \end{alphanumerate}
+    
+\end{lemma}
+    
+\begin{thm}
+    Every topological manifold is paracompact.
+    In fact: Given an open cover $\Uu$ of $M$ and a basis $\Bb$ for the topology of $M$, there exists a countable, locally finite, open refinement of $\Uu$ consisting of elements of $\Bb$.
+\end{thm}
+\begin{proof}
+    Idea: Uses that a locally compact, second-countable Hausdorff space admits an exhaustion by compact sets (i.e.\ a ascending sequence of compact sets such that the space is the limit of this sequence).
+\end{proof}
+Now let $M$ be a smooth manifold.
+\begin{definition}
+    $B\subset M$ is a \emph{regular coordinate ball} if there are a smooth chart $(B',\phi)$ and numbers $0<r<r'$ such that $B\subset B'$ and $\phi(B) = B_r(0)$, $\phi(\overline B) = \overline{B_r(0)}$ and $\phi(B') = B_{r'}(0)$.
+\end{definition}
+
+\begin{prop}
+    Every smooth manifold has a countable basis of regular coordinate balls.
+\end{prop}
+
+\begin{lemma}
+    \begin{alphanumerate}
+    \item
+        The function $f\colon \IR\to \IR$ given by $f(t)\coloneqq e^{-1/t}$ for $t>0$ and $0$ otherwise is smooth.
+    \item
+        Given $r_1<r_2\in \IR$, there exists a smooth function $h\colon \IR\to \IR$ such that $h(t) \equiv 1$ for $t\leq r_1$, $0<h(t)<1$ for $r_1<t<r_2$, and $h(t) \equiv 0$ for $t\geq r_2$.
+    \item
+        There exists a smooth function $H\colon \IR^n\to\IR$ such that $H\equiv 1$ on $\overline{B_{r_1}(0)}$, $0 < H < 1$ on $B_{r_2}\setminus \overline{B_{r_1}}$ and $H\equiv 0$ on $\IR^n \setminus B_{r_2}(0)$.
+    \end{alphanumerate}
+\end{lemma}
+
+\begin{proof}
+    \begin{alphanumerate}
+    \item
+        Compute derivatives.
+    \item
+        \begin{align*}
+            h(t) = \frac{f(r_2-t)}{f(r_2-t) + f(t-r_1)}
+        \end{align*}
+    \item
+        $H(x) = h(|x|)$
+        
+    \end{alphanumerate}
+    
+\end{proof}
+
+We call $h$ a \emph{cutoff function} and $H$ a \emph{bump function}.
+
+Recall: For a topological space $X$, and a map $f\colon X\to \IR^k$ we define the support of $f$ as $\supp f\coloneqq \overline{\left\{p\in X\such f(p) \neq 0\right\}}$.
+
+Let $\Uu=\left\{U_\alpha\right\}_{\alpha\in A}$ be an open cover of $X$.
+\begin{definition}[Partition of unity]
+    A \emph{partition of unity} subordinate to $\Uu$ is a family $\{\phi_\alpha\}_{\alpha\in A}$ of continuous functions $\phi_\alpha\colon X\to \IR$ such that
+    \begin{itemize}
+        \item
+        $0\leq \phi_\alpha(x) \leq 1$ for all $\alpha\in A, x\in X$.
+    \item
+        $\supp(\phi_\alpha) \subset U_\alpha$
+    \item
+        the family of supports $\{\supp \phi_\alpha\}$ is locally finite.
+    \item 
+        $\sum_{\alpha\in A} \phi_\alpha(x) = 1$ for all $x\in X$. Note: this is a finite sum by the previous property.
+
+    \end{itemize}
+    If $M$ is a smooth manifold, a partition of unity $\{\phi_\alpha\}$ is smooth $\phi_\alpha$ is smooth.
 \end{definition}
 
 
 
 
 
-
-
-
-
-
-
+        
 
 
 
