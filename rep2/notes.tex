@@ -1,0 +1,271 @@
+\documentclass{skript}
+
+\title{Representation Theory II}
+\lecturer{Prof.\ Dr.\ Catharina Stroppel}
+\author{Nicholas Schwab}
+\date{Winter Term 2019/20}
+
+\bibliography{literature}
+
+\begin{document}
+\thispagestyle{plain}
+These notes are on the lecture Representation Theory II (V4A4) in the winter term 2019/20 at the University Bonn.
+
+\tableofcontents
+
+\chapter{Introduction}
+
+Tutorials will be on Tuesday from 8 to 10 and from 12 to 14.
+The Exercise Sheets shall be handed in on Friday before the lecture.
+
+\section*{Motivation}
+Geometry interlinks strongly with representation theory and combinatorics.
+
+\begin{figure}
+    \begin{tikzpicture}
+        \node (geo) {Geometry};
+        \node (combi) at (4,4)  {Combinatorics};
+        \node (rep) at (8,0){Representation Theory};
+        \draw [->] (geo) -- (rep); % construct rep
+        \draw [<->] (geo) -- (rep); % compute!
+        \draw [<->] (geo) -- (rep); % positivity integrality results
+        \draw [<-] (geo) -- (rep); %  interesting varieties
+
+        \draw [<-] (geo) -- (combi); % explicit calc
+        \draw [->] (geo) -- (combi); % elementary approach
+        \draw [<-] (geo) -- (combi); % conceptual approach
+        \draw [->] (geo) -- (combi); % positivity results
+
+        \draw [<-] (rep) -- (combi); % explicit rep th
+        \draw [->] (rep) -- (combi); % conceptual explanation of identities
+        \draw [->] (rep) -- (combi); % definition of many  interesting comb. objects
+        \draw [<-] (rep) -- (combi); % algorithm
+    \end{tikzpicture}
+    
+\end{figure}
+
+\section{Basics on Grassmanians}
+The ground field will always be $\IC$.
+Fix $d,n\in \IN_0$ with $n\geq 1$
+
+\begin{definition}[Grassmanian]\label{def:grass}
+    We define the \emph{Grassmanian} with respect to $d$ and $n$ as
+    \begin{align*}
+        \Gr(d,n) = \left\{V\such V\subseteq \IC^n \text{ subspace},~ \dim V = d\right\}
+    \end{align*}
+\end{definition}
+
+\begin{bsp}
+    \begin{align*}
+        \Gr(0,n) &= \{\{0\}\}   &&     \Gr(n,n) = \{\IC^n\} &&       \Gr(1,n) = \IP(\IC^n)
+    \end{align*}
+\end{bsp}
+
+\begin{note}
+    In order for $\Gr(d,n)$ to be non-empty, we have to have $0\leq d\leq n$. 
+    We will assume this always henceforth.
+\end{note}
+
+Given $V\in \Gr(d,n)$ with basis $v_1,\dots, v_d$, we have $v_1\wedge v_2\wedge \dots \wedge v_d \in \bigwedge^d V$.
+
+\begin{fact}
+    \begin{itemize}
+        \item
+            $x\otimes y = - y\otimes x$ in $\bigwedge^d V$ for all $x,y\in V$.
+        \item
+            The dimension ist $\dim \bigwedge^d V = \binom nd$ with a basis given by $e_{i_1}\wedge \dots \wedge e_{i_d}$ where $e_1,\dots, e_n$ basis of $\IC^n$ and $i_1<\dots < i_d$.
+    \end{itemize}
+\end{fact}
+    
+\begin{note}
+    Up to a scalar $v_1\wedge\dots\wedge v_d$ is independent of the choice of basis.
+    If we take another basis, we get 
+    \begin{align*}
+        \sum_{\omega\in S_d} \sgn(\omega) a_{1,\omega(1)} \dots a_{d,\omega(d)} v_1\wedge\dots \wedge v_d
+    \end{align*}
+    where $A = (a_{i,j})$ is the base change matrix between the two bases.
+
+    Hence we obtain a well-defined map 
+    \begin{align*}
+        \Gr(d,n) &\longrightarrow \IP(\bigwedge^d V) = \IP^{\binom nd-1}\\
+        V &\longmapsto [v_1\wedge\dots \wedge v_d]
+    \end{align*}
+    We usually write just $v_1\wedge \dots \wedge v_d$ instead of $[v_1\wedge\dots \wedge v_d]$.
+\end{note}
+
+\begin{definition}[Plücker coordinates]\label{def:plcoor}
+    Fix standard basis $e_1,\dots, e_n$ of $\IC^n$ and induced basis $e_I = e_{i_1}\wedge \dots\wedge e_{i_d}$ where $I=\{i_1< \dots < i_d\} \subset \{1, \dots, n\}$.
+    We then can assign to a $V\in \Gr(d,n)$ with a fixed basis $v_1,\dots, v_d$ the \emph{Plücker coordinates} $p_I$ via $v_1\wedge \dots \wedge v_d = \sum_{I} p_I e_I$.
+    We call pl (?) the Plücker map.
+\end{definition}
+
+\begin{bsp}
+    Let $V\in \Gr(2,3)$ given by $V = \langle e_1+e_2, e_1+e_3\rangle$. 
+    This gives $v_1\wedge v_2 = e_1\wedge e_3 - e_1\wedge e_2 + e_2\wedge e_3$. 
+    Hence the Plücker coordinates are $p_{13} = 1$, $p_{12} = -1$ and $p_{23} = 1$.
+    These are exactly the maximal minors of
+    \begin{align*}
+        A = (v_1, v_2) = \begin{pmatrix} 1 &1\\ 1 &0 \\0 & 1\end{pmatrix}\;.
+    \end{align*}
+\end{bsp}
+
+\begin{definition}
+    We define
+    \begin{align*}
+        \Ii_{d,n} = \left\{I\subseteq {1,\dots, n} \such |I| = d\right\}
+    \end{align*}
+    For an element $I\in \Ii_{d,n}$ we denote its elements often by $i_1 <\dots < i_d$.
+\end{definition}
+
+We often consider Plücker coordinates as elements of $\left(\bigwedge^d V\right)^*$ defined by $p_I(e_J) = \delta_{I,J}$ for $I,J\in \Ii_{d,n}$. 
+Note these are homogenuos elements, so they give elements in the coordinate ring of $\IP(\bigwedge^d V)$.
+
+Our goal is to show that $\Gr(d,n)$ is a projective variety.
+
+\begin{definition}[projective variety]
+    A \emph{projective variety} is a subset $X$ of some $\IP^m_{\IC}$ of the form $X=\Vv(S)$ (the vanishing set of $S$) where $S\subseteq \IC[X_0,\dots, X_m]$ of homogeneous polynomials. 
+    Call $\IC[X_0, \dots, X_m]/\Ii(X)$ the (homogeneous) coordinate ring of $X$.
+    Here 
+    \begin{align*}
+        \Ii(X) = \left(\left\{f\in \IC[X_0,\dots,X_m] \text{ homogeneous}\such f(x) = 0 \forall x\in X\right\}\right)_{\IC}
+    \end{align*}
+    
+\end{definition}
+\begin{lemma}\label{lem:phix}
+    Let $V$ be a finite-dimensional vector space, $0\neq x\in \bigwedge^d V$.
+    Define 
+    \begin{align*}
+        \phi_x \colon V&\longrightarrow \bigwedge^{d+1} V\\
+        v &\longmapsto x\wedge v
+    \end{align*}
+    Then
+    \begin{enumerate}
+        \item
+            $\dim \ker \phi_x \leq d$
+        \item
+            $\dim \ker \phi_x = d$ if and only if $x = v_1\wedge \dots \wedge v_d$ for some linearly independent $v_i\in V$.
+        \item
+            If $x$ is a pure wedge as above, $\ker \phi_x = \langle v_1,\dots, v_d\rangle$.
+    \end{enumerate}
+    
+\end{lemma}
+\begin{proof}
+    Choose an ordered basis $e_1,\dots, e_n$ of $V$ such that $e_1, \dots, e_s$ is a basis of $\ker \phi_x$. 
+    Let $x= \sum_{I\in \Ii_{d,n}} a_I e_I$.
+    Then $\phi_x(e_j) = \sum a_I e_I \wedge e_j = \sum_{j\not\in I} a_I e_{I\cup\{j\}}$. So $e_j$ is in $\ker \phi_x$ and $a_I\neq 0$ implies $j\in I$.
+    Thus $s\leq d$.
+
+    Let $x= e_1\wedge \dots \wedge e_s \wedge y$ for some $y\in \bigwedge ^{d-s} V$. 
+    If $d=s$ this implies $x$ is a pure wedge.
+    If $x$ is a pure wedge, we have $x= e_1\wedge \dots \wedge e_s \wedge y_1\wedge\dots \wedge y_{d-s}$ for some $y_i\in V$.
+    Hence $\ker\phi_x\supseteq \langle e_1,\dots, e_s, y_1,\dots, y_{d-s}\rangle$ and therefore $\dim \ker \phi_x = d$.
+\end{proof}
+
+\begin{thm}[Plücker embedding]\label{def:plembed}
+    pl is an injective map with closed image in $\IP(\bigwedge^d V)\simeq \IP_{\IC}^{\binom nd-1}$. 
+    In particular $\Gr(d,n)$ is isomorphic to a projective variety.
+\end{thm}
+\begin{proof}
+    First we proof that the map is injective.
+    For $d=n$, $\Gr(d,n)$ is a point so the map is injective.
+    Assume $d<n$. Assume $x = v_1\wedge \dots \wedge v_d$, $y = w_1\wedge \dots \wedge w_d$ with $x=y$ in $\IP(\bigwedge^d V)$. Then $\ker \phi_x = \ker \phi_y$.
+    By Lemma~\ref{lem:phix} the spaces generated by $v_i$ and $w_i$ are the same, which proves injectivity.
+
+    Now we show that Pl has closed image.
+    Assume again $d< n$ and $x\in \im Pl$. 
+    So $x$ is the class of some pure wedge.
+    By Lemma~\ref{lem:phix} this is equivalent to $\rank \phi_x\leq n-d$. 
+    Now by linear algebra, the rank of a matrix is the maximum $r$ such that nor all $r$-minors vanish.
+    Hence $x\in \im Pl$ is equivalent to all $(n-d+1)$-minors vanish for $\phi_x$.
+    
+    But these minors are polynomials in the entries of the matrix for $\phi_x$, hence in the coordinate for $x$.
+    Therefore the condition for $x\in \im Pl$ is a closed condition.
+\end{proof}
+
+\begin{bsp}
+    For $\Gr(2,4)$ we get the zero set of all 3-minors in $4\times 4$-matrices.
+    These are 16 cubic equations!
+\end{bsp}
+
+We want a better description.
+Our first step is finding an affine covering.
+
+We have a map of sets
+\begin{align*}
+    M_{n\times d} \setminus Z &\longrightarrow \Gr(d,n)\\
+    A=(v_1,\dots, v_d) &\longmapsto \langle v_1,\dots, v_d\rangle
+\end{align*}
+where $Z=\left\{A\in M_{n\times d}(\IC) \such \rank A< d\right\}$.
+This gives a bijection
+\begin{align*}
+   \Phi\colon M_{n\times d} \setminus Z /_\sim \leftrightarrow \Gr(d,n)
+\end{align*}
+where $A\sim A'$ if there is some $C\in \Gl_d(\IC)$ with $A=A'C$.
+
+\begin{lemma}\label{lem:affinecovgrass}
+    There is an open covering $\Gr(d,n) = \bigcup_{I\in \Ii_{d,n}} U_I$, where \begin{align*}U_I = \left\{x\in \Gr(d,n) \such p_I(x) \neq 0\right\}\;.\end{align*}
+    Moreover $U_I \simeq \IA^{d(n-d)}$.
+\end{lemma}
+\begin{proof}
+    Consider 
+    \begin{align*}
+        f\colon \IA^{d(n-d)} = M_{(n-d)\times d} (\IC) &\longrightarrow U_{1,\dots, d} \subseteq \Gr(d,n)\\
+        B &\longmapsto \Phi\left(\binom {\IONE_d}B\right)
+    \end{align*}
+    Plücker coordinates are polynomial functions in entries of $B$, hence $f$ is a morphism of affine algebraic varieties.
+    Note that the $(i,j)$-entry of $B$ can be recovered from $f(B)$ by taking the minor given as derterminant of the submatrix given by the rows from $\{1,\dots, d\}\setminus\{i\} \cup \{j+d\}$.
+
+    Note that $f$ is surjective, so $f^{-1}$ is defined and also a morphism. 
+    Therfore $f$ is an isomorphism and $U_{1,\dots, d} \simeq \IA^{d(n-d)}$. 
+    For the general case just permutate the rows.
+\end{proof}
+
+\begin{bsp}
+    The Grassmanian $\Gr(1,2) = \IP^1(\IC)$ has covering $U_{\{1\}} = \left\{[1:x]\such x\in \IC\right\}$ and $U_{\{2\}} = \left\{[x:1]\such x\in \IC\right\}$.
+\end{bsp}
+\begin{cor}
+    As a projective variety $\dim \Gr(d,n) = d(n-d)$.
+\end{cor}
+
+\section{Plücker relations}
+Plücker coordinates restricted to $\Gr(d,n)\subseteq \IP(\bigwedge^dV)$ satisfy certain relations -- which?
+What are the coordinate rings of $\Gr(d,n)$ explicitly?
+
+\begin{fact}
+    Plücker coordinates (respectively their pullbacks via $\Phi$) satisfy:
+    \begin{itemize}
+        \item
+            linear on $\wedge^d\IC^n$
+        \item
+            multilinear and alternating in columns of $\Phi^{-1}(x) \in M_{(n-d)\times d}(\IC)$ for $x\in \Gr(d,n)$.
+        \item
+            $p_I$ is alternating in the rows given by $I$, since it is a determinant of the corresponding submatrix.
+    \end{itemize}
+\end{fact}
+
+\paragraph{Idea:} Consider $f=p_Ip_J$ for $I\neq J$. 
+It is alternating in the rows given by $I$ and $J$ respectively but not $I\cup J$.
+We want to make $f$ alternating for at least the rows given by $I\cup\{j\}$ for some $j\in J, j\not\in I$.
+The result is then an alternating form of degree $d+1$ on an $d$-dimensional vector space.
+Since this a zero function, this gives us a relation on Plücker coordinates.
+
+\begin{bsp}[Alternating a function]
+    Let $f=p_{12}p_{34}$ for $\Gr(2,4)$.
+    Alternating gives us $p_{12}p_{34} - p_{13}p_{24} + p_{23}p_{14}$.
+\end{bsp}
+
+\begin{definition}[Alternation]\label{def:alternation}
+    For $\underline i = (i_1,\dots, i_d)$ and $\underline j = (j_1,\dots, j_d)$ with $i,j\in \{1,\dots, n\}$. 
+    Define \begin{align*}p_{\underline i} = \begin{cases} \sgn(\omega) p_I & \text{if } |I| = d\\ 0 &\text{otherwise}\end{cases} \end{align*}
+    where $\{\omega(i_1)< \omega(i_2) < \dots < \omega(i_d)\} = I$ with $\omega \in S_d$.
+    Denote $p_{(\underline i, \underline j)} = p_{\underline i}p_{\underline j}$.
+\end{definition}
+
+
+
+
+
+
+
+
+\end{document}
